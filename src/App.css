@@ -1,0 +1,20 @@
+.App {
+  text-align: center;
+  
+}
+
+.info {
+  margin: auto;
+  width: 70%;
+  border-style: solid;
+  border-color: white;
+  border-width: 1px;
+  
+}
+
+.info img {
+  border-radius: 50rem;
+}
+.form-control label {
+  padding-top: 5rem;
+}
