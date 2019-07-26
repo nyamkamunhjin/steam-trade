@@ -10,7 +10,6 @@ class InventoryPage extends Component {
     super(props);
   }
 
-
   render() {
     return (
       <h1>Inventory page</h1>
