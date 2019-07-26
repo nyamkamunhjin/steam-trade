@@ -1,3 +1,7 @@
+div {
+  overflow: auto;
+}
+
 .main-navigation {
   position: fixed;
   left: 0;
@@ -17,10 +21,10 @@
 }
 
 .main-navigation__items {
-  /* margin-left: 1.5rem;  */
   margin-left: auto;
   margin-right: 0;
   padding-right: 1rem;
+  clear: both;
 }
 
 .main-navigation__items ul {
@@ -32,7 +36,7 @@
 }
 
 .main-navigation__items li {
-  margin: 0 1rem;
+  margin: 0 .5rem;
 }
 
 .main-navigation__items a,
@@ -47,11 +51,12 @@
   font: inherit;
 }
 
+
 .main-navigation__items a:hover,
 .main-navigation__items a:active,
 .main-navigation__items a.active,
 .main-navigation_items button:hover {
   color: #039be5;
   background: #fff;
-  /* box-shadow: 1px 1px 5px rgba(0, 0, 0, .25); */
+  box-shadow: 1px 1px 5px rgba(0, 0, 0, .25);
 }

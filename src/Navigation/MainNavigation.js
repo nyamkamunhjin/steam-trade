@@ -1,23 +1,38 @@
 import React from 'react';
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
+
 import './MainNavigation.css';
+import steam_login from './steam_login.png';
+import AuthContext from '../context/auth-context';
 
 const MainNavigation = props => (
-  <header className="main-navigation">
-    <div className="main-navigation__logo">
-      <h1>Item Trade </h1>
-    </div>
-    <nav className="main-navigation__items">
-      <ul>
-        <li>
-        </li>
-
-        <li>
-          <NavLink to="/inventory">Inventory</NavLink>
-        </li>
-      </ul>
-    </nav>
-  </header>
+  <AuthContext.Consumer>
+    {context => {
+      return (
+        <header className="main-navigation">
+          <div className="main-navigation__logo">
+            <h1>Item Trade </h1>
+          </div>
+          <nav className="main-navigation__items">
+            <ul>
+              <li>
+                {context.token && <NavLink to="/trade">Trade</NavLink>}
+              </li>
+              <li>
+                {context.token && <NavLink to="/inventory">Inventory</NavLink>}
+              </li>
+              <li>
+                {!context.token && <button onClick={props.steam_signin}>
+                  <img src={steam_login} />
+                </button>}
+              </li>
+            </ul>
+          </nav>
+        </header>
+      )
+    }}
+  </AuthContext.Consumer>
+  
 );
 
 export default MainNavigation;

@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 
-export const GET_USER_INFO = gql`
+const GET_USER_INFO = gql`
   query SteamUserInfo($steamId: String!) {
     steamUserInfo(SteamID: $steamId) {
       avatar {
@@ -20,3 +20,18 @@ export const GET_USER_INFO = gql`
   }
 `;
 
+const LOGIN = gql`
+  query {
+    login {
+      user {
+        steamid
+        personaname
+        lastlogoff
+      }
+      token
+      tokenExpiration
+    }
+  }
+`;
+
+export { GET_USER_INFO, LOGIN };
