@@ -8,11 +8,12 @@ div {
   top: 0;
   width: 100%;
   height: 3.5rem;
-  background: #006db3;
+  background: #8093e9;
   padding: 0 1rem;
   display: flex;
   align-items: center;
   box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
+  z-index: 300;
 }
 
 .main-navigation__logo h1 {
@@ -36,27 +37,29 @@ div {
 }
 
 .main-navigation__items li {
-  margin: 0 .5rem;
+  margin: 0 0.5rem;
 }
 
-.main-navigation__items a,
-.main-navigation__items button {
+.main-navigation__items a {
   text-decoration: none;
   color: #fff;
   border-radius: 5px;
-  padding:  .5rem;
+  padding: 0.5rem;
   background: transparent;
   cursor: pointer;
   border: none;
   font: inherit;
 }
-
+.main-navigation__items button {
+  padding: 0.5rem;
+  border: none;
+}
 
 .main-navigation__items a:hover,
 .main-navigation__items a:active,
-.main-navigation__items a.active,
-.main-navigation_items button:hover {
+.main-navigation__items a.active {
   color: #039be5;
   background: #fff;
-  box-shadow: 1px 1px 5px rgba(0, 0, 0, .25);
+  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.25);
 }
+

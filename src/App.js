@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import ApolloClient from 'apollo-boost';
 import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom';
-import { ApolloProvider, Query } from 'react-apollo';
+import { ApolloProvider } from 'react-apollo';
+import { ApolloClient, ApolloLink, InMemoryCache, HttpLink } from 'apollo-boost';
 
 import './App.css';
 import MainNavigation from './Navigation/MainNavigation';
@@ -11,8 +11,24 @@ import TradePage from './pages/trade';
 import { LOGIN } from './graphql/queries/queries';
 const { REACT_APP_API_URL } = process.env;
 
+const httpLink = new HttpLink({ uri: REACT_APP_API_URL + '/graphql' });
+
+const authMiddleware = new ApolloLink((operation, forward) => {
+  // add the authorization to the headers
+  operation.setContext(({ headers = {} }) => ({
+    headers: {
+      ...headers,
+      authorization: 'Bearer ' + localStorage.getItem('token'),
+    }
+  }));
+
+  return forward(operation);
+})
+
+
 const client = new ApolloClient({
-  uri: REACT_APP_API_URL + '/graphql'
+  link: authMiddleware.concat(httpLink),
+  cache: new InMemoryCache()
 });
 
 class App extends Component {
@@ -55,6 +71,7 @@ class App extends Component {
           })
           .then(data => {
             this.login(data.data.login.token, data.data.login.user);
+            localStorage.setItem('token', data.data.login.token); 
           })
           .catch(err => {
             console.log(err);
@@ -74,7 +91,8 @@ class App extends Component {
                 token: this.state.token,
                 user: this.state.user,
                 login: this.login,
-                logout: this.logout
+                logout: this.logout,
+                client
               }}
             >
               <MainNavigation steam_signin={this.onHandleLogin} />

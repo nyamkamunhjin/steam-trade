@@ -34,4 +34,12 @@ const LOGIN = gql`
   }
 `;
 
-export { GET_USER_INFO, LOGIN };
+const GET_USER_ITEMS = gql`
+  query GetUserItems($steamId: String!) {
+    getUserItems(steam_id: $steamId) {
+      name
+      icon_url
+    }
+  }
+`;
+export { GET_USER_INFO, LOGIN, GET_USER_ITEMS };
