@@ -54,7 +54,6 @@ class App extends Component {
             query: LOGIN
           })
           .then(data => {
-            // console.log(data);
             this.login(data.data.login.token, data.data.login.user);
           })
           .catch(err => {
