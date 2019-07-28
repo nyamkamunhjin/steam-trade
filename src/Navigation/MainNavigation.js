@@ -26,6 +26,7 @@ const MainNavigation = props => (
                   <img src={steam_login} />
                 </button>}
               </li>
+              {context.token && <button className="btn-cancel" onClick={context.logout}>Log out</button>}
             </ul>
           </nav>
         </header>

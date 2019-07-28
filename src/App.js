@@ -82,7 +82,7 @@ class App extends Component {
               <main className="App">
                 <Switch>
                   {this.state.token && (
-                    <Redirect from="/trade" to="inventory" exact />
+                    <Redirect from="/" to="inventory" exact />
                   )}
                   {this.state.token && (
                     <Route path="/trade" component={TradePage} />
