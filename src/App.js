@@ -20,18 +20,17 @@ const httpLink = new HttpLink({
   uri: REACT_APP_API_URL + '/graphql',
   credentials: 'same-origin'
 });
-
+// localStorage.clear();
 const removeToken = () => {
-  localStorage.removeItem('token');
-  localStorage.removeItem('createdAt');
-  localStorage.removeItem('tokenExpiration');
+  localStorage.clear();
 };
+
 const authMiddleware = new ApolloLink((operation, forward) => {
   // get the authentication token from local storage if it exists
 
   const time = localStorage.getItem('createdAt');
   const tokenExpiration = localStorage.getItem('tokenExpiration');
-  console.log(time);
+  // console.log(time);
   if (time && tokenExpiration) {
     if ((new Date().getTime() - time) / 36e5 > tokenExpiration) {
       removeToken();
@@ -41,7 +40,7 @@ const authMiddleware = new ApolloLink((operation, forward) => {
   }
 
   const token = localStorage.getItem('token');
-  console.log(token);
+  // console.log(token);
 
   // add the authorization to the headers
   operation.setContext(({ headers = {} }) => ({
@@ -69,13 +68,35 @@ class App extends Component {
     };
   }
 
-  login = (token, user) => {
-    this.setState({ token, user });
+  login = token => {
+    this.setState({ token });
+    this.setUser();
   };
 
   logout = () => {
     removeToken();
     this.setState({ token: null, user: null });
+  };
+
+  setUser = async () => {
+    try {
+      await client
+      .query({
+        query: LOGIN
+      })
+      .then(data => {
+        console.log(data);
+        this.setState({ user: data.data.login.user });
+      })
+      .catch(err => {
+        console.log(err);
+        throw err;
+      });
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
+    
   };
 
   onHandleLogin() {
@@ -88,6 +109,12 @@ class App extends Component {
   }
 
   componentDidMount() {
+    if (localStorage.getItem('token')) {
+      this.login(
+        localStorage.getItem('token')
+      );
+    }
+
     window.addEventListener('message', event => {
       if (event.origin !== process.env.REACT_APP_API_URL) return;
 
@@ -99,12 +126,12 @@ class App extends Component {
             query: LOGIN
           })
           .then(data => {
-            console.log(data);
+            // console.log(data);
             localStorage.setItem('token', data.data.login.token);
             localStorage.setItem('createdAt', new Date().getTime());
             localStorage.setItem('tokenExpiration', data.data.tokenExpiration);
 
-            this.login(data.data.login.token, data.data.login.user);
+            this.login(localStorage.getItem('token'));
           })
           .catch(err => {
             console.log(err);

@@ -41,7 +41,8 @@ class InventoryPage extends Component {
     return (
       <AuthContext.Consumer>
         {context => {
-          return (
+          // console.log(context);
+          return context.user ? (
             <Query
               query={GET_USER_ITEMS}
               variables={{ steamId: context.user.steamid }}
@@ -59,7 +60,7 @@ class InventoryPage extends Component {
                 );
               }}
             </Query>
-          );
+          ) : <Spinner animation="border" variant="info" />;
         }}
       </AuthContext.Consumer>
     );

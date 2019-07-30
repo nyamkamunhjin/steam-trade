@@ -5,7 +5,7 @@ const userInventory = props => {
   if (!props.userInventory) return <h1>fail</h1>;
   const userInventory = props.userInventory.map(item => {
     return (
-      <Col key={item.id} xs={2} md={2}>
+      <Col key={item.id} xs={6} md={2}>
         <Card>
           <Card.Img
             variant="top"
