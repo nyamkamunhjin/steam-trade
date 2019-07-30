@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom';
 import { ApolloProvider } from 'react-apollo';
-import { ApolloClient, ApolloLink, InMemoryCache, HttpLink } from 'apollo-boost';
+import {
+  ApolloClient,
+  ApolloLink,
+  InMemoryCache,
+  HttpLink
+} from 'apollo-boost';
 
 import './App.css';
 import MainNavigation from './Navigation/MainNavigation';
@@ -11,20 +16,43 @@ import TradePage from './pages/trade';
 import { LOGIN } from './graphql/queries/queries';
 const { REACT_APP_API_URL } = process.env;
 
-const httpLink = new HttpLink({ uri: REACT_APP_API_URL + '/graphql' });
+const httpLink = new HttpLink({
+  uri: REACT_APP_API_URL + '/graphql',
+  credentials: 'same-origin'
+});
 
+const removeToken = () => {
+  localStorage.removeItem('token');
+  localStorage.removeItem('createdAt');
+  localStorage.removeItem('tokenExpiration');
+};
 const authMiddleware = new ApolloLink((operation, forward) => {
+  // get the authentication token from local storage if it exists
+
+  const time = localStorage.getItem('createdAt');
+  const tokenExpiration = localStorage.getItem('tokenExpiration');
+  console.log(time);
+  if (time && tokenExpiration) {
+    if ((new Date().getTime() - time) / 36e5 > tokenExpiration) {
+      removeToken();
+    }
+  } else {
+    removeToken();
+  }
+
+  const token = localStorage.getItem('token');
+  console.log(token);
+
   // add the authorization to the headers
   operation.setContext(({ headers = {} }) => ({
     headers: {
       ...headers,
-      authorization: 'Bearer ' + localStorage.getItem('token'),
+      authorization: token ? `Bearer ${token}` : ''
     }
   }));
 
   return forward(operation);
-})
-
+});
 
 const client = new ApolloClient({
   link: authMiddleware.concat(httpLink),
@@ -46,6 +74,7 @@ class App extends Component {
   };
 
   logout = () => {
+    removeToken();
     this.setState({ token: null, user: null });
   };
 
@@ -70,8 +99,12 @@ class App extends Component {
             query: LOGIN
           })
           .then(data => {
+            console.log(data);
+            localStorage.setItem('token', data.data.login.token);
+            localStorage.setItem('createdAt', new Date().getTime());
+            localStorage.setItem('tokenExpiration', data.data.tokenExpiration);
+
             this.login(data.data.login.token, data.data.login.user);
-            localStorage.setItem('token', data.data.login.token); 
           })
           .catch(err => {
             console.log(err);

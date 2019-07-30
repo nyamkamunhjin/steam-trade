@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import { Spinner } from 'react-bootstrap';
 import './inventory.css';
 import AuthContext from '../context/auth-context';
 import UserInventory from '../components/userInventory/userInventory';
@@ -47,7 +47,8 @@ class InventoryPage extends Component {
               variables={{ steamId: context.user.steamid }}
             >
               {({ loading, error, data }) => {
-                if (loading) return null;
+                if (loading)
+                  return <Spinner animation="border" variant="info" />;
                 if (error) return `Error! ${error}`;
 
                 return (

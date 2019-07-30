@@ -37,8 +37,9 @@ const LOGIN = gql`
 const GET_USER_ITEMS = gql`
   query GetUserItems($steamId: String!) {
     getUserItems(steam_id: $steamId) {
-      name
+      market_name
       icon_url
+      id
     }
   }
 `;

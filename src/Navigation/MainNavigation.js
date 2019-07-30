@@ -26,7 +26,7 @@ const MainNavigation = props => (
                     style={{ background: 'transparent' }}
                     onClick={props.steam_signin}
                   >
-                    <img src={steam_login} />
+                    <img src={steam_login} alt="steam-login"/>
                   </button>
                 )}
               </li>
