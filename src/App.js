@@ -85,7 +85,7 @@ class App extends Component {
         query: LOGIN
       })
       .then(data => {
-        console.log(data);
+        // console.log(data);
         this.setState({ user: data.data.login.user });
       })
       .catch(err => {
