@@ -14,7 +14,6 @@ const GET_USER_INFO = gql`
       primaryGroupID
       personaState
       personaStateFlags
-      commentPermission
       visibilityState
     }
   }
@@ -35,12 +34,36 @@ const LOGIN = gql`
 `;
 
 const GET_USER_ITEMS = gql`
-  query GetUserItems($steamId: String!) {
-    getUserItems(steam_id: $steamId) {
+  query GetUserItems($steamId: String!, $app_id: Int!) {
+    getUserItems(steam_id: $steamId, app_id: $app_id) {
       market_name
       icon_url
-      id
+      type
     }
   }
 `;
-export { GET_USER_INFO, LOGIN, GET_USER_ITEMS };
+
+const GET_USER = gql`
+  query {
+    getUser {
+      steamid
+      communityvisibilitystate
+      profilestate
+      personaname
+      lastlogoff
+      profileurl
+      avatar
+      avatarmedium
+      avatarfull
+      personastate
+      realname
+      primaryclanid
+      timecreated
+      personastateflags
+      loccountrycode
+      locstatecode
+    }
+  }
+`
+
+export { GET_USER_INFO, LOGIN, GET_USER_ITEMS, GET_USER };

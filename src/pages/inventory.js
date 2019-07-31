@@ -45,7 +45,7 @@ class InventoryPage extends Component {
           return context.user ? (
             <Query
               query={GET_USER_ITEMS}
-              variables={{ steamId: context.user.steamid }}
+              variables={{ steamId: context.user.steamid, app_id: 570 }}
             >
               {({ loading, error, data }) => {
                 if (loading)

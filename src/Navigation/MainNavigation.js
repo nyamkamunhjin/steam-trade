@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { Button } from 'react-bootstrap';
+import { Button, Image } from 'react-bootstrap';
 import './MainNavigation.css';
 import steam_login from './steam_login.png';
 import AuthContext from '../context/auth-context';
@@ -11,7 +11,7 @@ const MainNavigation = props => (
       return (
         <header className="main-navigation">
           <div className="main-navigation__logo">
-            <h1>Item Trade </h1>
+            {!context.user ? <h1>Item Trade </h1> : <Image src={context.user.avatar}  roundedCircle fluid/>}
           </div>
           <nav className="main-navigation__items">
             <ul>

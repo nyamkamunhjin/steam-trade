@@ -13,7 +13,7 @@ import MainNavigation from './Navigation/MainNavigation';
 import AuthContext from './context/auth-context';
 import InventoryPage from './pages/inventory';
 import TradePage from './pages/trade';
-import { LOGIN } from './graphql/queries/queries';
+import { LOGIN, GET_USER } from './graphql/queries/queries';
 const { REACT_APP_API_URL } = process.env;
 
 const httpLink = new HttpLink({
@@ -70,6 +70,7 @@ class App extends Component {
 
   login = token => {
     this.setState({ token });
+    // console.log(token);
     this.setUser();
   };
 
@@ -82,11 +83,11 @@ class App extends Component {
     try {
       await client
       .query({
-        query: LOGIN
+        query: GET_USER
       })
       .then(data => {
         // console.log(data);
-        this.setState({ user: data.data.login.user });
+        this.setState({ user: data.data.getUser });
       })
       .catch(err => {
         console.log(err);
